@@ -3,16 +3,22 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Blue
+  - Green
+  - Magenta
+  - White
+  - Salida
+  - Eliminator
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Suelo
   - Water
   - UI
-  - 
-  - 
+  - Entidades
+  - Ignorar_colliders
   - 
   - 
   - 
