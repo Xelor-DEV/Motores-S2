@@ -97,6 +97,11 @@ public class PlayerController : MonoBehaviour
         {
             collision.gameObject.GetComponent<OutOfBoundsEliminator>().Eliminar(this.GetComponent<PlayerController>());
         }
+        else if (collision.gameObject.tag == "Moneda")
+        {
+            gameManager.AumentarPuntaje(Random.Range(10, 30));
+            Destroy(collision.gameObject);
+        }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {

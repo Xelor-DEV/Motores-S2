@@ -8,7 +8,9 @@ public class GameManagerGame : MonoBehaviour
     [Header("Elementos UI")]
     [SerializeField] private TMP_Text cronometro;
     [SerializeField] private Slider barra_de_Vida;
-    [SerializeField] private GameObject pantalla_de_Pausa;   
+    [SerializeField] private GameObject pantalla_de_Pausa;
+    [SerializeField] private TMP_Text puntaje;
+    [SerializeField] private int puntos;
     [Header("Elementos de la Pantalla de Resultados")]
     [SerializeField] private GameObject pantalla_de_Ganar;
     [SerializeField] private TMP_Text resultado;
@@ -25,6 +27,10 @@ public class GameManagerGame : MonoBehaviour
         {
             return barra_de_Vida;
         }
+    }
+    void Start()
+    {
+        puntos = 0;
     }
     void Update()
     {
@@ -78,6 +84,12 @@ public class GameManagerGame : MonoBehaviour
     }
     public void CargarEscena(string escena)
     {
-        SceneManager.LoadScene(escena);    
+        SceneManager.LoadScene(escena);
+        Time.timeScale = 1;
+    }
+    public void AumentarPuntaje(int puntos)
+    {
+        this.puntos = this.puntos + puntos;
+        puntaje.text = "Puntaje: " + this.puntos.ToString();
     }
 }
