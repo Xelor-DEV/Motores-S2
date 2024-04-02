@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManagerGame : MonoBehaviour
 {
@@ -28,9 +29,16 @@ public class GameManagerGame : MonoBehaviour
             return barra_de_Vida;
         }
     }
+    //Eventos
+    public Action<int> CuandoSeActualicenPuntos;
+    public Action CuandoElJugadorEsDerrotado;
+    public Action CuandoElJugadorGana;
     void Start()
     {
         puntos = 0;
+        CuandoSeActualicenPuntos += ActualizarPuntosUI;
+        CuandoElJugadorGana += TerminarNivel;
+        CuandoElJugadorEsDerrotado += Morir;
     }
     void Update()
     {
@@ -49,7 +57,7 @@ public class GameManagerGame : MonoBehaviour
         Time.timeScale = 1;
 
     }
-    public void TerminarNivel() 
+    public void TerminarNivel()
     {
         if (escena == "Nivel1")
         {
@@ -90,6 +98,15 @@ public class GameManagerGame : MonoBehaviour
     public void AumentarPuntaje(int puntos)
     {
         this.puntos = this.puntos + puntos;
-        puntaje.text = "Puntaje: " + this.puntos.ToString();
+        CuandoSeActualicenPuntos?.Invoke(this.puntos);
+    }
+    public void ActualizarPuntosUI(int nuevosPuntos)
+    {
+        puntaje.text = "Puntaje: " + nuevosPuntos.ToString();
+    }
+    public void ActualizaBarraDeVida(int nuevaVida)
+    {
+        Barra_de_Vida.value = nuevaVida;
     }
 }
+

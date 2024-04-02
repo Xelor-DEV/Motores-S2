@@ -443,7 +443,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 78714547}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1093482080}
+        m_TargetAssemblyTypeName: GameManagerInicioController, Assembly-CSharp
+        m_MethodName: Salir
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &78714547
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int fuerza_de_Salto;
     [SerializeField] private LayerMask capas_Interactuables;
     [SerializeField] private GameManagerGame gameManager;
+    public Action<int> CuandoSeActualiceVida;
     public GameManagerGame GameManager
     {
         get
@@ -40,6 +42,7 @@ public class PlayerController : MonoBehaviour
         set
         {
             vida = value;
+            CuandoSeActualiceVida?.Invoke(vida);
         }
     }
     public string Color_
@@ -56,7 +59,8 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-        gameManager.Barra_de_Vida.value = vida;
+        gameManager.ActualizaBarraDeVida(Vida);
+        CuandoSeActualiceVida += gameManager.ActualizaBarraDeVida;
     }
     void Update()
     {
@@ -91,16 +95,27 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Salida")
         {
-            gameManager.TerminarNivel();
+            gameManager.CuandoElJugadorGana?.Invoke();
         }
-        else if(collision.gameObject.tag == "Eliminator")
+        else if (collision.gameObject.tag == "Eliminator")
         {
             collision.gameObject.GetComponent<OutOfBoundsEliminator>().Eliminar(this.GetComponent<PlayerController>());
         }
-        else if (collision.gameObject.tag == "Moneda")
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Moneda")
         {
-            gameManager.AumentarPuntaje(Random.Range(10, 30));
+            gameManager.AumentarPuntaje(UnityEngine.Random.Range(10, 30));
             Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.tag == "Corazon")
+        {
+            if (Vida < 10)
+            {
+                AumentarVida(1);
+                Destroy(collision.gameObject);
+            }
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -110,13 +125,13 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        collision.isTrigger = false;
-        se_puede_cambiar_color = true;
+        if (collision.tag != "Corazon")
+        {
+            collision.isTrigger = false;
+            se_puede_cambiar_color = true;
+        }
     }
-    public void ActualizaBarraDeVida()
-    {
-        gameManager.Barra_de_Vida.value = vida;
-    }
+
     public void CambiarColor(string Tag)
     {
         if (se_puede_cambiar_color == true)
@@ -137,5 +152,9 @@ public class PlayerController : MonoBehaviour
                 color = "Green";
             }
         }
+    }
+    public void AumentarVida(int aumento)
+    {
+        Vida = Vida + aumento;     
     }
 }

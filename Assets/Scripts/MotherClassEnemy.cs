@@ -1,11 +1,10 @@
 using UnityEngine;
-
 public class MotherClassEnemy : MonoBehaviour
 {
     protected int daño;
     protected void Attack(PlayerController jugador, int daño)
     {
-        if(jugador.Vida > 0)
+        if (jugador.Vida > 0)
         {
             string color = jugador.Color_;
             if (this.tag == color)
@@ -16,13 +15,14 @@ public class MotherClassEnemy : MonoBehaviour
             else
             {
                 jugador.Vida = jugador.Vida - daño;
-                jugador.ActualizaBarraDeVida();
+                jugador.GameManager.ActualizaBarraDeVida(jugador.Vida);
             }
         }
         if (jugador.Vida <= 0)
         {
-            jugador.GameManager.Morir();
+            jugador.GameManager.CuandoElJugadorEsDerrotado?.Invoke();
         }
 
     }
 }
+

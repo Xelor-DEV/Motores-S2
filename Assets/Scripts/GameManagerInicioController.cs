@@ -7,5 +7,8 @@ public class GameManagerInicioController : MonoBehaviour
     {
         SceneManager.LoadScene(Escena);
     }
-
+    public void Salir()
+    {
+        Debug.Log("Saliendo del juego.");
+    }
 }
