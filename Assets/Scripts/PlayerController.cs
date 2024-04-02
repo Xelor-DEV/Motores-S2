@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,7 +15,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private string color;
     [SerializeField] private int velocidad;
     [SerializeField] private int vida;
-    [SerializeField] private string axisHorizontal;
     [SerializeField] private int fuerza_de_Salto;
     [SerializeField] private LayerMask capas_Interactuables;
     [SerializeField] private GameManagerGame gameManager;
@@ -64,7 +64,6 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        direccionHorizontal = Input.GetAxisRaw(axisHorizontal);
         deteccion_raycast = Physics2D.Raycast(transform.position, direccion_raycast, 1, capas_Interactuables);
         if (deteccion_raycast == true)
         {
@@ -75,16 +74,24 @@ public class PlayerController : MonoBehaviour
         {
             esta_sobre_suelo = 0;
         }
-
-        if (Input.GetKeyDown(KeyCode.Space) && (esta_sobre_suelo == 1 || estado_doble_salto == 1))
+    }
+    public void Input(InputAction.CallbackContext context)
+    {
+        direccionHorizontal = context.ReadValue<float>();
+    }
+    public void Saltar(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Performed)
         {
-            if (esta_sobre_suelo == 0)
+            if (esta_sobre_suelo == 1 || estado_doble_salto == 1)
             {
-                estado_doble_salto = 0;
+                if (esta_sobre_suelo == 0)
+                {
+                    estado_doble_salto = 0;
+                }
+                _compRigidbody2D.velocity = new Vector2(_compRigidbody2D.velocity.x, fuerza_de_Salto);
             }
-            _compRigidbody2D.velocity = new Vector2(_compRigidbody2D.velocity.x, fuerza_de_Salto);
         }
-
     }
     void FixedUpdate()
     {

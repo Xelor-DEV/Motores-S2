@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System;
-
+using UnityEngine.InputSystem;
 public class GameManagerGame : MonoBehaviour
 {
     [Header("Elementos UI")]
@@ -20,6 +20,9 @@ public class GameManagerGame : MonoBehaviour
     [SerializeField] private GameObject reintentar;
     [SerializeField] private GameObject siguiente_nivel;
     [SerializeField] private string escena;
+    [SerializeField] private Button[] botones;
+    [SerializeField] private PlayerController jugador;
+    private int boton_activo = -1;
     private float tiempo = 0;
     private double time_entero = 0;
     public Slider Barra_de_Vida
@@ -46,6 +49,30 @@ public class GameManagerGame : MonoBehaviour
         time_entero = Mathf.Floor(tiempo);
         cronometro.text = time_entero.ToString();
     }
+
+    public void SiguientePoder(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            if (boton_activo + 1 < 3)
+            {
+                jugador.CambiarColor(botones[boton_activo + 1].tag);
+                boton_activo = boton_activo + 1;
+            }
+        }
+    }
+    public void AnteriorPoder(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            if (boton_activo - 1 > -1)
+            {
+                jugador.CambiarColor(botones[boton_activo - 1].tag);
+                boton_activo = boton_activo - 1;
+            }
+        }
+    }
+
     public void Pausar()
     {
         pantalla_de_Pausa.SetActive(true);
