@@ -17,7 +17,7 @@ public class EnemyVerticalController : MotherClassEnemy
     }
     void Start()
     {
-        daño = 1;
+        daño = 2;
     }
     void FixedUpdate()
     {

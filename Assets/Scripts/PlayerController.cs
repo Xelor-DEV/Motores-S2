@@ -18,12 +18,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int fuerza_de_Salto;
     [SerializeField] private LayerMask capas_Interactuables;
     [SerializeField] private GameManagerGame gameManager;
+    [SerializeField] private CinemachineController cinemachineController;
     public Action<int> CuandoSeActualiceVida;
     public GameManagerGame GameManager
     {
         get
         {
             return gameManager;
+        }
+    }
+    public CinemachineController CinemachineController
+    {
+        get
+        {
+            return cinemachineController;
         }
     }
     public bool Se_puede_cambiar_color

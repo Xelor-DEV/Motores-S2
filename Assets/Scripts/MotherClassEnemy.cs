@@ -2,8 +2,18 @@ using UnityEngine;
 public class MotherClassEnemy : MonoBehaviour
 {
     protected int daño;
+    private GameManagerGame gameManager;
+    private CinemachineController cinemachineController;
     protected void Attack(PlayerController jugador, int daño)
     {
+        if (gameManager == null)
+        {
+            gameManager = jugador.GameManager;
+        }
+        if (cinemachineController == null)
+        {
+            cinemachineController = jugador.CinemachineController;
+        }
         if (jugador.Vida > 0)
         {
             string color = jugador.Color_;
@@ -15,12 +25,13 @@ public class MotherClassEnemy : MonoBehaviour
             else
             {
                 jugador.Vida = jugador.Vida - daño;
-                jugador.GameManager.ActualizaBarraDeVida(jugador.Vida);
+                gameManager.ActualizaBarraDeVida(jugador.Vida);
+                cinemachineController.SacudirCamara(daño);
             }
         }
         if (jugador.Vida <= 0)
         {
-            jugador.GameManager.CuandoElJugadorEsDerrotado?.Invoke();
+            gameManager.CuandoElJugadorEsDerrotado?.Invoke();
         }
 
     }
